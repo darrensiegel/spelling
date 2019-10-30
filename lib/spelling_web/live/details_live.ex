@@ -13,7 +13,9 @@ defmodule SpellingWeb.DetailsLive do
     ~L"""
     <div>
       <h3>Week ending <%= @list.week_ending %></h3>
-      <%= live_link "Quiz!", to: Routes.live_path(@socket, SpellingWeb.MultipleChoiceLive, @list.id) %>
+      <%= live_link "Multiple Choice!", to: Routes.live_path(@socket, SpellingWeb.MultipleChoiceLive, @list.id) %>
+      <%= live_link "Spelling!", to: Routes.live_path(@socket, SpellingWeb.SpellLive, @list.id) %>
+
       <table class="ui table celled">
         <thead>
           <tr>

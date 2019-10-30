@@ -76,6 +76,28 @@ Hooks.AudioClipPlay = {
     }
 }
 
+Hooks.ClickPlay = {
+
+    mounted() {
+
+        this.el.addEventListener("click", () => {
+
+            const clipId = this.el.getAttribute("data-clip-id");
+            const mark = Date.now()
+            fetch("/api/clip/" + clipId)
+                .then(response => response.text())
+                .then(clip => {
+                    var audio = new Audio(clip);
+                    console.log(Date.now() - mark)
+                    audio.play();
+                });
+        });
+
+
+
+    }
+}
+
 
 Hooks.ChoiceButton = {
 

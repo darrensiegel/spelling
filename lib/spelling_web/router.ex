@@ -21,7 +21,8 @@ defmodule SpellingWeb.Router do
 
     live "/lists", ListsLive
     live "/lists/:id", DetailsLive
-    live "/lists/:id/quiz", MultipleChoiceLive
+    live "/lists/:id/mcq", MultipleChoiceLive
+    live "/lists/:id/spelling", SpellLive
   end
 
   # Other scopes may use custom stacks.
