@@ -27,37 +27,27 @@ defmodule SpellingWeb.SpellLive do
 
     display =
       case assigns.rewarded do
-        True -> "block"
+        true -> "block"
         _ -> "none"
       end
 
-    hinting =
-      case assigns.correct do
-        False ->
-          "error"
-
-        _ ->
-          ""
-      end
-
     style =
-      case assigns.correct do
-        True -> "background-color: #D8E8D7; color: #3C6E3A; border: #6BA568;"
+      case assigns.state do
+        "incorrect" -> "background-color: #ffb3b3; color: darkred; border-color: darkred;"
+        "done" -> "background-color: #2eb82e; color: white; border-color: #6BA568;"
+        "correct" -> "background-color: #d6f5d6; color: black; border-color: #6BA568;"
         _ -> ""
       end
 
     image = Enum.random(@pokemon)
 
-    IO.puts(hinting)
-
     ~L"""
     <div style="position: relative;">
 
       <div class="ui massive form">
-        <div class="field <%=hinting%>">
-          <input style="<%= style %>" type="text" phx-keyup="input" value="<%= @input %>">
+        <div class="field">
+          <input class="<%= @input %>" style="<%= style %>" type="text" phx-keyup="input" phx-hook="InputBox">
         </div>
-        <button class="ui submit button" phx-click="check">Submit</button>
       </div>
 
       <div data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
@@ -68,14 +58,6 @@ defmodule SpellingWeb.SpellLive do
         style="margin-left: 10px; margin-top: 40px;"
         class="ui mini icon button orange">
         <i class="play icon"></i>
-      </button>
-
-      <button
-        phx-click="next"
-        style="margin-left: 10px; margin-top: 40px;"
-        class="ui right labeled icon button mini orange">
-        <i class="right arrow icon"></i>
-        Next
       </button>
 
       <div style="display: <%= display %>; position: absolute; top: 10px; left: 300px;">
@@ -94,10 +76,10 @@ defmodule SpellingWeb.SpellLive do
      assign(socket,
        word: nil,
        list_id: nil,
-       correct: nil,
+       state: "none",
        input: "",
        in_a_row: 0,
-       rewarded: False
+       rewarded: false
      )}
   end
 
@@ -124,36 +106,32 @@ defmodule SpellingWeb.SpellLive do
        list_id: id,
        input: "",
        word: word,
-       correct: nil,
-       rewarded: False
+       state: "none",
+       rewarded: false
      })}
+  end
+
+  def handle_info(:next, socket) do
+    IO.puts("input")
+    id = socket.assigns.list_id
+    generate_question(id, socket)
   end
 
   def handle_event("input", %{"value" => input}, socket) do
     IO.puts("input")
-    {:noreply, assign(socket, input: input, correct: nil)}
-  end
 
-  def handle_event("check", _, socket) do
-    IO.puts("handle check")
     word = socket.assigns.word
-    input = socket.assigns.input
     in_a_row = socket.assigns.in_a_row
 
-    {in_a_row, correct} =
-      if input == word.word do
-        {in_a_row + 1, True}
-      else
-        {0, False}
+    {state, in_a_row, rewarded} =
+      cond do
+        word.word == input -> {"done", in_a_row + 1, Utils.rewarded?(in_a_row + 1)}
+        String.starts_with?(word.word, input) -> {"correct", in_a_row, false}
+        true -> {"incorrect", 0, false}
       end
 
-    rewarded = Utils.rewarded?(in_a_row)
+    if state == "done", do: :timer.send_after(2000, self(), :next)
 
-    {:noreply, assign(socket, correct: correct, in_a_row: in_a_row, rewarded: rewarded)}
-  end
-
-  def handle_event("next", _, socket) do
-    IO.puts("handle next")
-    generate_question(socket.assigns.list_id, socket)
+    {:noreply, assign(socket, input: input, state: state, in_a_row: in_a_row, rewarded: rewarded)}
   end
 end

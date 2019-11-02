@@ -44,6 +44,15 @@ Hooks.AudioRecord = {
     }
 }
 
+Hooks.InputBox = {
+    updated() {
+        if (this.el.getAttribute("class") === "") {
+            this.el.value = "";
+        }
+    }
+}
+
+
 Hooks.AudioClip = {
     mounted() {
         console.log('mounted')
