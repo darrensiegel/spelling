@@ -117,6 +117,13 @@ defmodule Spelling.Content do
     Repo.all(List)
   end
 
+  def lists_for_user(user) do
+    Repo.all(
+      from p in List,
+        where: p.name == ^user
+    )
+  end
+
   @doc """
   Gets a single list.
 

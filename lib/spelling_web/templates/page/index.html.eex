@@ -1,0 +1,49 @@
+
+<script>
+function login(user) {
+    location.href = "/lists/" + user;
+}
+</script>
+
+<div class="ui link cards">
+  <div class="card" onclick="login('adam')">
+    <div class="image">
+      <img src="/images/charizard.png">
+    </div>
+    <div class="content">
+      <div class="header">Adam</div>
+      <div class="meta">
+        <a>First Grade</a>
+      </div>
+      <div class="description">
+        Adam's Spanish Lists
+      </div>
+    </div>
+    <div class="extra content">
+      <span class="right floated">
+        Joined in 2019
+      </span>
+      
+    </div>
+  </div>
+  <div class="card" onclick="login('drew')">
+    <div class="image">
+      <img src="/images/pikachu.png">
+    </div>
+    <div class="content">
+      <div class="header">Drew</div>
+      <div class="meta">
+        <span class="date">Second Grade</span>
+      </div>
+      <div class="description">
+        Drew's English Lists
+      </div>
+    </div>
+    <div class="extra content">
+      <span class="right floated">
+        Joined in 2019
+      </span>
+      
+    </div>
+  </div>
+</div>

@@ -34,13 +34,23 @@ defmodule SpellingWeb.ListsLive do
   end
 
   def mount(_session, socket) do
-    lists = Content.list_lists()
-    {:ok, assign(socket, lists: lists)}
+    {:ok, socket}
+  end
+
+  def handle_params(%{"user" => user}, _uri, socket) do
+    lists = Content.lists_for_user(user)
+
+    {:noreply,
+     assign(socket, %{
+       lists: lists,
+       user: user
+     })}
   end
 
   def handle_event("create", _, socket) do
     now = Date.utc_today()
     day_of_week = Date.day_of_week(now)
+    user = socket.assigns.user
 
     next_friday =
       case day_of_week do
@@ -50,7 +60,7 @@ defmodule SpellingWeb.ListsLive do
         _ -> Date.add(now, 5 - day_of_week)
       end
 
-    query = from(p in List, select: max(p.week_ending))
+    query = from(p in List, select: max(p.week_ending), where: p.name == ^user)
 
     week_ending =
       case Repo.one(query) do
@@ -60,7 +70,7 @@ defmodule SpellingWeb.ListsLive do
 
     IO.inspect(week_ending)
 
-    {:ok, list} = Content.create_list(%{week_ending: week_ending, name: "default"})
+    {:ok, list} = Content.create_list(%{week_ending: week_ending, name: user})
 
     lists = [list] ++ socket.assigns.lists
 
