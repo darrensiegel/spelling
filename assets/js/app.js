@@ -46,12 +46,10 @@ Hooks.AudioRecord = {
 
 Hooks.InputBox = {
     updated() {
-        if (this.el.getAttribute("class") === "") {
-            this.el.value = "";
-        }
+
+        this.el.value = this.el.getAttribute("class");
     }
 }
-
 
 Hooks.AudioClip = {
     mounted() {

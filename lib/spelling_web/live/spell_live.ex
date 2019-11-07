@@ -50,6 +50,45 @@ defmodule SpellingWeb.SpellLive do
         </div>
       </div>
 
+      <div class="ui buttons" style="margin-top: 20px;">
+        <button
+          phx-click="letter"
+          phx-value-letter="á"
+          class="ui massive icon button">
+          á
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="é"
+          class="ui massive icon button">
+          é
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="í"
+          class="ui massive icon button">
+          í
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="ó"
+          class="ui massive icon button">
+          ó
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="ú"
+          class="ui massive icon button">
+          ú
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="ñ"
+          class="ui massive icon button">
+          ñ
+        </button>
+      </div>
+
       <div data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
 
       <button
@@ -117,9 +156,7 @@ defmodule SpellingWeb.SpellLive do
     generate_question(id, socket)
   end
 
-  def handle_event("input", %{"value" => input}, socket) do
-    IO.puts("input")
-
+  def process_input(input, socket) do
     word = socket.assigns.word
     in_a_row = socket.assigns.in_a_row
 
@@ -133,5 +170,14 @@ defmodule SpellingWeb.SpellLive do
     if state == "done", do: :timer.send_after(2000, self(), :next)
 
     {:noreply, assign(socket, input: input, state: state, in_a_row: in_a_row, rewarded: rewarded)}
+  end
+
+  def handle_event("input", %{"value" => input}, socket) do
+    process_input(input, socket)
+  end
+
+  def handle_event("letter", %{"letter" => letter}, socket) do
+    input = socket.assigns.input
+    process_input(input <> letter, socket)
   end
 end
