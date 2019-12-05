@@ -21,6 +21,8 @@ defmodule SpellingWeb.SpellLive do
     squirtle.jpg
     )
 
+  @spec render(atom | %{in_a_row: number, rewarded: any, state: any}) ::
+          Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     size = 50 * assigns.in_a_row
     font = 6 * assigns.in_a_row
@@ -80,6 +82,12 @@ defmodule SpellingWeb.SpellLive do
           phx-value-letter="ú"
           class="ui massive icon button">
           ú
+        </button>
+        <button
+          phx-click="letter"
+          phx-value-letter="ü"
+          class="ui massive icon button">
+          ü
         </button>
         <button
           phx-click="letter"
