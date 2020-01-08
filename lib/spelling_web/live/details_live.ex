@@ -108,9 +108,8 @@ defmodule SpellingWeb.DetailsLive do
     {:noreply, assign(socket, clip: nil, loaded: false, state: "stopped")}
   end
 
-  def handle_event("save", encoded_clip, socket) do
+  def handle_event("save", %{"clip" => encoded_clip}, socket) do
     IO.puts("save")
-
     list_id = socket.assigns.list_id
     word = socket.assigns.word
 
@@ -121,13 +120,19 @@ defmodule SpellingWeb.DetailsLive do
         String.slice(encoded_clip, String.length(prefix), String.length(encoded_clip))
       )
 
+    IO.puts(word)
+    IO.puts(list_id)
+    IO.puts(encoded_clip)
+
     Content.create_word(%{word: word, list_id: list_id, clip: clip})
     words = Content.get_just_words!(list_id)
+
+    IO.puts(words)
 
     {:noreply, assign(socket, words: words, clip: nil, loaded: false, state: "none")}
   end
 
-  def handle_event("word", word, socket) do
+  def handle_event("word", %{"value" => word}, socket) do
     IO.puts("word")
     {:noreply, assign(socket, word: word)}
   end

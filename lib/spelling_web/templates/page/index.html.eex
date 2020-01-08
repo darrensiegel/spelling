@@ -6,9 +6,12 @@ function login(user) {
 </script>
 
 <div class="ui link cards">
+  
   <div class="card" onclick="login('adam')">
     <div class="image">
+      
       <img src="/images/charizard.png">
+      
     </div>
     <div class="content">
       <div class="header">Adam</div>
@@ -16,7 +19,7 @@ function login(user) {
         <a>First Grade</a>
       </div>
       <div class="description">
-        Adam's Spanish Lists
+       Adam's Spanish Lists
       </div>
     </div>
     <div class="extra content">

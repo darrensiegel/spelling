@@ -22,6 +22,7 @@ import LiveSocket from "phoenix_live_view"
 var data = null;
 var stream = null;
 var recorder = null;
+var lastPlayed = null;
 
 let Hooks = {}
 Hooks.AudioRecord = {
@@ -67,10 +68,15 @@ Hooks.AudioClip = {
 
 
 Hooks.AudioClipPlay = {
-
+    mounted() {
+        console.log('mounted')
+    },
     updated() {
         console.log("updated");
         const clipId = this.el.getAttribute("data-clip-id");
+
+        if (lastPlayed === clipId) return;
+        lastPlayed = clipId;
         const mark = Date.now()
         fetch("/api/clip/" + clipId)
             .then(response => response.text())
@@ -136,7 +142,9 @@ Hooks.AudioSave = {
         this.el.addEventListener("click", e => {
             var reader = new FileReader();
             reader.onload = (event) => {
-                this.pushEvent("save", event.target.result);
+                const clip = event.target.result;
+                console.log(clip);
+                this.pushEvent("save", { clip, test: 'test' });
             };
             reader.readAsDataURL(data);
         })
@@ -155,7 +163,7 @@ Hooks.AudioStop = {
 Hooks.AudioWord = {
     mounted() {
         this.el.addEventListener("input", e => {
-            this.pushEvent("word", this.el.value);
+            this.pushEvent("word", { value: this.el.value });
         })
     }
 }
