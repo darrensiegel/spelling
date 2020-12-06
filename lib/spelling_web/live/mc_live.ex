@@ -1,5 +1,5 @@
 defmodule SpellingWeb.MultipleChoiceLive do
-  use Phoenix.LiveView
+  use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
 
   alias Spelling.Content
 
@@ -55,7 +55,7 @@ defmodule SpellingWeb.MultipleChoiceLive do
         </div>
       <% end %>
 
-      <div data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
+      <div id="AudioPlay" data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
 
       <button
         phx-click="next"
@@ -76,13 +76,12 @@ defmodule SpellingWeb.MultipleChoiceLive do
     """
   end
 
-  def mount(_session, socket) do
-    {:ok, assign(socket, word: nil, list_id: nil, choices: nil, in_a_row: 0, rewarded: False)}
-  end
+  def mount(%{"id" => id}, _session, socket) do
 
-  def handle_params(%{"id" => id}, _uri, socket) do
-    IO.puts("handle params")
-    generate_question(id, socket)
+    socket = assign(socket, word: nil)
+    socket = generate_question(id, socket)
+
+    {:ok, assign(socket, in_a_row: 0)}
   end
 
   def generate_question(id, socket) do
@@ -108,13 +107,13 @@ defmodule SpellingWeb.MultipleChoiceLive do
       |> Enum.shuffle()
       |> Enum.map(fn w -> %{word: w, result: nil} end)
 
-    {:noreply,
+
      assign(socket, %{
        list_id: id,
        word: word,
        rewarded: False,
        choices: choices
-     })}
+     })
   end
 
   def handle_event("choice", %{"choice" => choice}, socket) do
@@ -156,6 +155,6 @@ defmodule SpellingWeb.MultipleChoiceLive do
 
   def handle_event("next", _, socket) do
     IO.puts("handle next")
-    generate_question(socket.assigns.list_id, socket)
+    {:noreply, generate_question(socket.assigns.list_id, socket)}
   end
 end

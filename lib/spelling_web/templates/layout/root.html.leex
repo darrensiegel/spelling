@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Senora Says</title>
+    <%= csrf_meta_tag() %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+  <style type="text/css">
+  body {
+    background-color: #FFFFFF;
+  }
+  .ui.menu .item img.logo {
+    margin-right: 1.5em;
+  }
+  .main.container {
+    margin-top: 7em;
+  }
+  .wireframe {
+    margin-top: 2em;
+  }
+  .ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+  }
+  </style>
+
+  </head>
+  <body>
+  <script>
+  //  window.addEventListener( "pageshow", function ( event ) {
+  //    var historyTraversal = event.persisted ||
+ //                           ( typeof window.performance != "undefined" &&
+ //                                 window.performance.navigation.type === 2 );
+ //     if ( historyTraversal ) {
+ ////       console.log('traverse')
+        // Handle page restore.
+  //      window.location.reload();
+//      }
+//    });
+  </script>
+
+
+  <%= render SpellingWeb.SharedView, "menu.html", assigns %>
+
+  <div class="ui main text container">
+    <%= @inner_content %>
+  </div>
+
+
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+<script>
+     $(document).ready(function(){
+          $('.ui.dropdown').dropdown();
+          $('.ui.dropdown.item').dropdown();
+          $('.ui.radio.checkbox').checkbox();
+          $('.definition').popup();
+    });
+    </script>
+
+      <%= if get_flash(@conn, :info) do %>
+        <div id="flash" class="ui floating positive compact message transition hidden" style="position: absolute; margin-right: 30px; top: 80px; right: -20px; width: 250px;">
+          <%= get_flash(@conn, :info) %>
+        </div>
+        <script>
+
+        setTimeout(() => {
+          $('#flash').transition('slide left');
+          setTimeout(() => $('#flash').transition('fade'), 2000);
+        }, 300)
+
+        </script>
+      <% end %>
+
+      <%= if get_flash(@conn, :error) do %>
+        <div id="flash" class="ui floating negative compact message transition hidden" style="position: absolute; margin-right: 30px; top: 80px; right: -20px; width: 250px;">
+          <%= get_flash(@conn, :error) %>
+        </div>
+        <script>
+
+        setTimeout(() => {
+          $('#flash').transition('slide left');
+          setTimeout(() => $('#flash').transition('fade'), 2000);
+        }, 300)
+
+        </script>
+      <% end %>
+  </body>
+
+
+</html>

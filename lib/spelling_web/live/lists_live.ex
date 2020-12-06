@@ -1,6 +1,6 @@
 defmodule SpellingWeb.ListsLive do
-  use Phoenix.LiveView
-
+  use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
+  use Phoenix.HTML
   alias Spelling.Content
   alias Spelling.Content.List
   alias SpellingWeb.DetailsLive
@@ -22,7 +22,7 @@ defmodule SpellingWeb.ListsLive do
           <%= for list <- @lists do %>
             <tr id="row-<%= list.id %>">
               <td>
-                <%= live_link list.week_ending, to: Routes.live_path(@socket, DetailsLive, list.id) %>
+                <%= link list.week_ending, to: Routes.live_path(@socket, DetailsLive, list.id) %>
               </td>
             </tr>
           <% end %>
@@ -33,7 +33,8 @@ defmodule SpellingWeb.ListsLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_, _session, socket) do
+    IO.inspect "mounted"
     {:ok, socket}
   end
 

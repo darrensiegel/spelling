@@ -67,24 +67,30 @@ Hooks.AudioClip = {
 }
 
 
+function playClip(clipId) {
+  if (lastPlayed === clipId) return;
+  lastPlayed = clipId;
+  const mark = Date.now()
+  fetch("/api/clip/" + clipId)
+      .then(response => response.text())
+      .then(clip => {
+          var audio = new Audio(clip);
+          console.log(Date.now() - mark)
+          audio.play();
+      });
+}
+
 Hooks.AudioClipPlay = {
     mounted() {
         console.log('mounted')
+        const clipId = this.el.getAttribute("data-clip-id");
+        playClip(clipId);
     },
     updated() {
         console.log("updated");
         const clipId = this.el.getAttribute("data-clip-id");
-
-        if (lastPlayed === clipId) return;
-        lastPlayed = clipId;
-        const mark = Date.now()
-        fetch("/api/clip/" + clipId)
-            .then(response => response.text())
-            .then(clip => {
-                var audio = new Audio(clip);
-                console.log(Date.now() - mark)
-                audio.play();
-            });
+        playClip(clipId);
+        
 
     }
 }
@@ -177,6 +183,6 @@ function onRecordingReady(e) {
     audio.play();
 }
 
-
-let liveSocket = new LiveSocket("/live", Socket, { hooks: Hooks })
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+let liveSocket = new LiveSocket("/live", Socket, { hooks: Hooks, params: {_csrf_token: csrfToken}});
 liveSocket.connect()

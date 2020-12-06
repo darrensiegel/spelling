@@ -1,5 +1,5 @@
 defmodule SpellingWeb.TestLive do
-  use Phoenix.LiveView
+  use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
 
   def render(assigns) do
     ~L"""
@@ -9,7 +9,7 @@ defmodule SpellingWeb.TestLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_, _session, socket) do
     {:ok, socket}
   end
 end

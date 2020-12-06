@@ -1,5 +1,5 @@
 defmodule SpellingWeb.SpellLive do
-  use Phoenix.LiveView
+  use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
 
   alias Spelling.Content
   alias SpellingWeb.Utils
@@ -48,7 +48,7 @@ defmodule SpellingWeb.SpellLive do
 
       <div class="ui massive form">
         <div class="field">
-          <input class="<%= @input %>" style="<%= style %>" type="text" phx-keyup="input" phx-hook="InputBox">
+          <input id="inputbox" class="<%= @input %>" style="<%= style %>" type="text" phx-keyup="input" phx-hook="InputBox">
         </div>
       </div>
 
@@ -97,9 +97,10 @@ defmodule SpellingWeb.SpellLive do
         </button>
       </div>
 
-      <div data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
+      <div id="<%= @word.id %>" data-clip-id="<%= @word.id %>" phx-hook="AudioClipPlay"></div>
 
       <button
+        id="play-<%= @word.id %>"
         phx-hook="ClickPlay"
         data-clip-id="<%= @word.id %>"
         style="margin-left: 10px; margin-top: 40px;"
@@ -118,7 +119,7 @@ defmodule SpellingWeb.SpellLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_, _session, socket) do
     {:ok,
      assign(socket,
        word: nil,

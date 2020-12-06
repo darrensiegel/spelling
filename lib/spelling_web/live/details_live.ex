@@ -1,6 +1,6 @@
 defmodule SpellingWeb.DetailsLive do
-  use Phoenix.LiveView
-
+  use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
+  use Phoenix.HTML
   alias Spelling.Content
   alias Spelling.Content.List
   alias Spelling.Content.Word
@@ -13,8 +13,8 @@ defmodule SpellingWeb.DetailsLive do
     ~L"""
     <div>
       <h3>Week ending <%= @list.week_ending %></h3>
-      <%= live_link "Multiple Choice!", to: Routes.live_path(@socket, SpellingWeb.MultipleChoiceLive, @list.id) %>
-      <%= live_link "Spelling!", to: Routes.live_path(@socket, SpellingWeb.SpellLive, @list.id) %>
+      <%= link "Multiple Choice!", to: Routes.live_path(@socket, SpellingWeb.MultipleChoiceLive, @list.id) %>
+      <%= link "Spelling!", to: Routes.live_path(@socket, SpellingWeb.SpellLive, @list.id) %>
 
       <table class="ui table celled">
         <thead>
@@ -63,7 +63,7 @@ defmodule SpellingWeb.DetailsLive do
     """
   end
 
-  def mount(_session, socket) do
+  def mount(_, _session, socket) do
     {:ok, assign(socket, word: "", loaded: false, list: nil, clip: nil, state: "none")}
   end
 

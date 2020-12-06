@@ -1,7 +1,13 @@
 defmodule SpellingWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :spelling
 
-  socket "/live", Phoenix.LiveView.Socket
+  @session_options [
+    store: :cookie,
+    key: "_spelling_key",
+    signing_salt: "sQXBVPGp"
+  ]
+
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   socket "/socket", SpellingWeb.UserSocket,
     websocket: true,
@@ -39,10 +45,7 @@ defmodule SpellingWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_spelling_key",
-    signing_salt: "h6mYkzjE"
+  plug Plug.Session, @session_options
 
   plug SpellingWeb.Router
 end
