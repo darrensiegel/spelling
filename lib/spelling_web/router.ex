@@ -1,8 +1,6 @@
 defmodule SpellingWeb.Router do
   use SpellingWeb, :router
 
-  alias SpellingWeb.Router.Helpers, as: Routes
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session

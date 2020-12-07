@@ -3,11 +3,6 @@ defmodule SpellingWeb.SpellLive do
 
   alias Spelling.Content
   alias SpellingWeb.Utils
-  alias Spelling.Content.Word
-  alias SpellingWeb.DetailsLive
-  alias SpellingWeb.Router.Helpers, as: Routes
-  alias Spelling.Repo
-  import Ecto.Query, only: [from: 2]
 
   @pokemon ~w(blastoise.png
     bulbasaur.png

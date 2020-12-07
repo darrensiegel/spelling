@@ -2,12 +2,7 @@ defmodule SpellingWeb.DetailsLive do
   use Phoenix.LiveView, layout: {SpellingWeb.LayoutView, "live.html"}
   use Phoenix.HTML
   alias Spelling.Content
-  alias Spelling.Content.List
-  alias Spelling.Content.Word
-  alias SpellingWeb.DetailsLive
   alias SpellingWeb.Router.Helpers, as: Routes
-  alias Spelling.Repo
-  import Ecto.Query, only: [from: 2]
 
   def render(assigns) do
     ~L"""
