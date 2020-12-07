@@ -5,7 +5,7 @@ defmodule Spelling.MixProject do
     [
       app: :spelling,
       version: "0.1.0",
-      elixir: "~> 1.5",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,10 +33,10 @@ defmodule Spelling.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.0"},
+      {:phoenix, "~> 1.5.5"},
       {:phoenix_ecto, "~> 4.1"},
       {:gettext, "~> 0.11"},
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.5"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
