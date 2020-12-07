@@ -33,10 +33,10 @@ defmodule Spelling.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.5"},
+      {:phoenix, "~> 1.5.0"},
       {:phoenix_ecto, "~> 4.1"},
       {:gettext, "~> 0.11"},
-      {:ecto_sql, "~> 3.5"},
+      {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
